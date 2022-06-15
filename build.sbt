@@ -19,7 +19,11 @@ lazy val hello = (project in file("."))
       "org.slf4j" % "slf4j-nop" % "1.6.4",
       "com.typesafe.slick" %% "slick-hikaricp" % "3.3.3"
     ),
+    libraryDependencies += "org.bitbucket.b_c" % "jose4j" % "0.7.12",
+    libraryDependencies += "de.mkammerer" % "argon2-jvm" % "2.11"
   )
 
 enablePlugins(SbtTwirl)
 enablePlugins(JettyPlugin)
+
+containerPort in Jetty := 5001

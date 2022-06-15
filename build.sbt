@@ -17,7 +17,9 @@ lazy val hello = (project in file("."))
       "org.json4s"   %% "json4s-jackson" % "4.0.1",
       "com.typesafe.slick" %% "slick" % "3.3.3",
       "org.slf4j" % "slf4j-nop" % "1.6.4",
-      "com.typesafe.slick" %% "slick-hikaricp" % "3.3.3"
+      "com.typesafe.slick" %% "slick-hikaricp" % "3.3.3",
+      "org.postgresql" % "postgresql" % "42.4.0",
+      "com.mchange" % "c3p0" % "0.9.5.5"
     ),
     libraryDependencies += "org.bitbucket.b_c" % "jose4j" % "0.7.12",
     libraryDependencies += "de.mkammerer" % "argon2-jvm" % "2.11"

@@ -2,9 +2,9 @@
 
 Tusee project is split into four repositories
 
-1. [tusee-auth](https://github.com/xgebi/tusee-auth)
+1. tusee-auth
     - handles login, registration and other authentication things
-2. tusee-app
+2. [tusee-app](https://github.com/xgebi/tusee-app)
     - handles every request apart from authentication
 3. [tusee-fe](https://github.com/xgebi/tusee-fe)
    - front-end for back-ends

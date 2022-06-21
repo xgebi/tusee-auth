@@ -22,4 +22,28 @@ object Tables {
   }
 
   val users = TableQuery[Users]
+
+  class Keys(tag: Tag) extends Table[(String, String, String, String)](tag, "tusee_encrypted_keys") {
+    def keyUuid = column[String]("key_uuid", O.PrimaryKey)
+    def userUuid = column[String]("tusee_user")
+    def key = column[String]("key")
+    def board = column[String]("board")
+
+    def * = (keyUuid, userUuid, key, board)
+  }
+
+  val keys = TableQuery[Keys]
+
+  class Boards(tag: Tag) extends Table[(String, String, String, String, Instant, String)](tag, "tusee_boards") {
+    def boardUuid = column[String]("board_uuid", O.PrimaryKey)
+    def name = column[String]("name")
+    def description = column[String]("description")
+    def owner = column[String]("owner")
+    def created = column[Instant]("created")
+    def columns = column[String]("columns")
+
+    def * = (boardUuid, name, description, owner, created, columns)
+  }
+
+  val boards = TableQuery[Boards]
 }

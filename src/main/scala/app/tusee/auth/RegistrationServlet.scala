@@ -32,8 +32,10 @@ class RegistrationServlet(val db: Database)  extends ScalatraServlet with Jackso
     if (resolved.isEmpty) {
       val argon2 = Argon2Factory.create()
       val uuid = UUID.randomUUID().toString
-
-      val userTuple = Tuple8(uuid, result.displayName, result.email, argon2.hash(10,65536, 1, result.password),  Instant.now(), true, true, "" )
+      val hashedPassword = argon2.hash(10,65536, 1, result.password.toCharArray)
+      val userTuple = Tuple8(uuid, result.displayName, result.email, hashedPassword,  Instant.now(), true, true, "" )
+      println(argon2.verify(userTuple._4, result.password.toCharArray))
+      println(hashedPassword)
       val withAddedUser = Tables.users += userTuple
       if (Await.result(db.run(withAddedUser), Duration.Inf) > 0) {
         RegistrationReturn(error = false, reason = "User registered")

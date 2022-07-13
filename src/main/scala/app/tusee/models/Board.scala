@@ -1,4 +1,4 @@
-package app.tusee.auth.models
+package app.tusee.models
 
 import java.time.Instant
 

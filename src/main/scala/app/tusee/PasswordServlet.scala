@@ -1,4 +1,4 @@
-package app.tusee.auth
+package app.tusee
 
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.ScalatraServlet

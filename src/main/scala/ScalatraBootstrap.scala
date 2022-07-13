@@ -1,4 +1,5 @@
-import app.tusee.auth._
+import app.tusee.{LoginServlet, PasswordServlet, RegistrationServlet, TuseeServlet}
+import app.tusee._
 import org.scalatra._
 import org.slf4j.{Logger, LoggerFactory}
 import com.mchange.v2.c3p0.ComboPooledDataSource

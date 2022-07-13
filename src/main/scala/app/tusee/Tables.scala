@@ -1,10 +1,8 @@
-package app.tusee.auth
+package app.tusee
 
 import slick.jdbc.PostgresProfile.api._
 
-import java.sql.Timestamp
 import java.time.Instant
-import java.util.Date
 
 object Tables {
 

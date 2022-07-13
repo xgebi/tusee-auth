@@ -1,3 +1,3 @@
-package app.tusee.auth.models
+package app.tusee.models
 
 case class RegistrationReturn(error: Boolean, reason: String)

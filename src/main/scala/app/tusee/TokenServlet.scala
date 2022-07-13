@@ -1,4 +1,4 @@
-package app.tusee.auth
+package app.tusee
 
 class TokenServlet {
 

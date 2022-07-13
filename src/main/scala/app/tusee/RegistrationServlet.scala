@@ -1,20 +1,16 @@
-package app.tusee.auth
+package app.tusee
 
-import app.tusee.auth.models.{RegistrationReturn, RegistrationValues}
-import org.json4s.{DefaultFormats, Formats}
-import org.scalatra.{FutureSupport, ScalatraServlet}
-import org.scalatra.json.JacksonJsonSupport
-import slick.jdbc.PostgresProfile.api._
-import app.tusee.auth.Tables
+import app.tusee.models.{RegistrationReturn, RegistrationValues}
 import de.mkammerer.argon2.Argon2Factory
+import org.json4s.{DefaultFormats, Formats}
+import org.scalatra.json.JacksonJsonSupport
+import org.scalatra.{FutureSupport, ScalatraServlet}
+import slick.jdbc.PostgresProfile.api._
 
-import java.sql.{Date, Timestamp}
-import java.time.{Instant, LocalDate}
-import java.util
+import java.time.Instant
 import java.util.UUID
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
-import scala.util.{Failure, Success}
 
 class RegistrationServlet(val db: Database)  extends ScalatraServlet with JacksonJsonSupport with FutureSupport {
   override protected implicit def jsonFormats: Formats = DefaultFormats
@@ -34,11 +30,14 @@ class RegistrationServlet(val db: Database)  extends ScalatraServlet with Jackso
       val uuid = UUID.randomUUID().toString
       val hashedPassword = argon2.hash(10,65536, 1, result.password.toCharArray)
       val userTuple = Tuple8(uuid, result.displayName, result.email, hashedPassword,  Instant.now(), true, true, "" )
-      println(argon2.verify(userTuple._4, result.password.toCharArray))
-      println(hashedPassword)
       val withAddedUser = Tables.users += userTuple
       if (Await.result(db.run(withAddedUser), Duration.Inf) > 0) {
-        RegistrationReturn(error = false, reason = "User registered")
+        val keysWithAddedKey = Tables.keys += Tuple4(UUID.randomUUID().toString, uuid, result.key, null)
+        if (Await.result(db.run(keysWithAddedKey), Duration.Inf) > 0) {
+          RegistrationReturn(error = false, reason = "User registered")
+        } else {
+          RegistrationReturn(error = true, reason = "Database error")
+        }
       } else {
         RegistrationReturn(error = true, reason = "Database error")
       }

@@ -1,5 +1,6 @@
 package app.tusee.auth
 
+import app.tusee.TuseeServlet
 import org.scalatra.test.scalatest._
 
 class TuseeServletTests extends ScalatraFunSuite {

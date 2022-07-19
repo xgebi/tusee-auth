@@ -1,6 +1,7 @@
 package app.tusee
 
-import app.tusee.models.{Board, Key, LoginValues, LoginReturn}
+import app.tusee.models.{Board, Key, LoginReturn, LoginValues}
+import app.tusee.services.UserService
 import de.mkammerer.argon2.Argon2Factory
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.json._
@@ -12,7 +13,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
-class LoginServlet(val db: Database)  extends ScalatraServlet with JacksonJsonSupport with CorsSupport {
+class LoginServlet()  extends ScalatraServlet with JacksonJsonSupport with CorsSupport {
   protected implicit lazy val jsonFormats: Formats = DefaultFormats
 
   before() {
@@ -20,10 +21,10 @@ class LoginServlet(val db: Database)  extends ScalatraServlet with JacksonJsonSu
   }
 
   post("/") {
+    val db = DbClient.db.get
     val result = parsedBody.extract[LoginValues]
-    val action = Tables.users.filter(_.email === result.email).result
-    val dbResult: Future[Seq[(String, String, String, String, Instant, Boolean, Boolean, String)]] = db.run(action)
-    val resolved = Await.result(dbResult, Duration.Inf)
+
+    val resolved = UserService.getUserByEmail(result.email)
     if (resolved.nonEmpty) {
       val argon2 = Argon2Factory.create()
       val res = argon2.verify(resolved.head._4, result.password.toCharArray)

@@ -14,11 +14,11 @@ class ScalatraBootstrap extends LifeCycle {
   logger.info("Created c3p0 connection pool")
 
   override def init(context: ServletContext): Unit = {
-    val db = Database.forDataSource(cpds, None)
+    DbClient.db = Some(Database.forDataSource(cpds, None))
 
-    context.mount(new LoginServlet(db), "/login")
-    context.mount(new RegistrationServlet(db), "/register")
-    context.mount(new PasswordServlet(db), "/password")
+    context.mount(new LoginServlet(), "/login")
+    context.mount(new RegistrationServlet(), "/register")
+    context.mount(new PasswordServlet(), "/password")
     context.mount(new TuseeServlet, "/*")
   }
 
